@@ -188,7 +188,8 @@ def add_evaluacion(request):
     """
     if request.POST and request.user.groups.filter(name='Profesores').exists():
         form = AddEvaluacion(request.POST)
-        if form.is_valid():
+        if form.is_valid() and \
+          form.cleaned_data['tiempo_min'] < form.cleaned_data['tiempo_max']:
             form.save()
             return HttpResponseRedirect('evaluaciones')
     return HttpResponseRedirect('evaluaciones')
@@ -202,7 +203,8 @@ def update_evaluacion(request, pk):
     """
     if request.POST and request.user.groups.filter(name='Profesores').exists():
         form = UpdateEvaluacion(request.POST)
-        if form.is_valid():
+        if form.is_valid() and \
+          form.cleaned_data['tiempo_min'] < form.cleaned_data['tiempo_max']:
             form.save()
             messages.success(request, 'Evaluación modificada correctamente')
             return HttpResponseRedirect('/evaluaciones/' + str(pk) + '/evaluacion_detalle')
