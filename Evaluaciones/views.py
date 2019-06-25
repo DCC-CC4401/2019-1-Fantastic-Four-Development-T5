@@ -20,9 +20,9 @@ def post_evaluaciones(request):
     :return:
     """
     form = AddEvaluacion()
-    evaluaciones = Evaluacion.objects.all().order_by('fecha_fin')
+    evaluaciones = Evaluacion.objects.all().order_by('fecha_inicio')
     # mostrar solo las 10 ultimas
-    evaluaciones = evaluaciones[:10]
+    evaluaciones = evaluaciones[:10:-1]
     return render(request, 'evaluacion/evaluacion_admin.html', {'form': form, 'evaluacion_list': evaluaciones})
 
 import json
