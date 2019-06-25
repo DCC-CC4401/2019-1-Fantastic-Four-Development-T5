@@ -91,6 +91,21 @@
         
         </div>
 
+         <!--Modalidad confirmacion -->
+	 <div id="confirmacion" class="w3-modal">
+	    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+		    <div class="w3-center"><br>
+			    <span onclick="document.getElementById('confirmacion').style.display='none'" class="w3-button w3-xlarge w3-transparent w3-display-topright" title="Close Modal">×</span>
+			    <p>¿Está seguro de enviar la evaluación?</p>
+				    {% csrf_token %}
+				    <input id="valor_eliminar" type="hidden" name="id" value="">
+				    <button class="w3-button w3-red w3-margin-bottom"  id="SI" value="-">Si</button>
+                    <button class="w3-button w3-red w3-margin-bottom" id="NO" value="-">No</button>
+		    </div>
+	    </div>
+     </div>
+
+
         {% if user|is_admin %}
             <div class="w3-panel w3-margin-bottom w3-card-4 w3-padding-16 w3-half w3-right" style="margin-right: 1.8%">
                 <span style="margin-left:21%"><i class="far fa-clock"></i> Hora final 
@@ -111,7 +126,7 @@
                 <input type='hidden' id='send-minutos' name='minutos'>
                 <input type='hidden' id='send-maximos' name='maximos'>
                 <button class="w3-button w3-xlarge w3-red" 
-                   type='button' onclick='sendEvaluacion()'><i class="fas fa-envelope-open-text"></i> Entregar
+                   type='button' onclick="checkBeforeSend();"><i class="fas fa-envelope-open-text"></i> Entregar
                     evaluación
                 </button>
             </form>
@@ -284,29 +299,34 @@
         $('#check').html('Complete la rúbrica antes de enviar su evaluación!');}
         else{
             $('#check').html('');
+            document.getElementById("confirmacion").style.display='block';
         }
-        
         return allPresent;
     }     
             
     //actualizar Rubricas
 // Sending in JSON format using POST method
 //
-function sendEvaluacion(){
+
+
+
+    document.getElementById("NO").addEventListener("click", function () {
+        document.getElementById("confirmacion").style.display='none';
+  })
+
+    document.getElementById("SI").addEventListener("click", function () {
     if(!checkBeforeSend()){
         return;
     }
-    
-    
-    
+
+    document.getElementById("confirmacion").style.display='none';
     let hora=0;
     let minutos=0;
     if(is_admin){
     hora=parseInt($('#hora').val());
     minutos=parseInt($('#minutos').val());
     }
-    
-    //data={'idEvaluacion':idEvaluacion, 'idGrupo':idGrupo, 'presentador':presentador, 
+    //data={'idEvaluacion':idEvaluacion, 'idGrupo':idGrupo, 'presentador':presentador,
     //'respuestas': seleccion, 'hora':hora,'minutos':minutos};
     $('#send-idEvaluacion').val(idEvaluacion);
     $('#send-idGrupo').val(idGrupo);
@@ -316,15 +336,12 @@ function sendEvaluacion(){
     $('#send-minutos').val(minutos);
     $('#send-maximos').val(JSON.stringify(maximos));
     $('#formSend').submit();
-    
-    
-    
-    
-    
-    
 
-}
-            
+
+
+    }
+
+    )
             
             
         </script>
