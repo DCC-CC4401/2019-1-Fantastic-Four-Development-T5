@@ -355,7 +355,6 @@
         if(hora>maximo | (hora==maximo && minuto!=0) | hora<minimo ){
              document.getElementById("descuento").style.display="block";
         }
-
         else{
              document.getElementById("descuento").style.display="none";
         }
@@ -364,7 +363,10 @@
     })
     document.getElementById("minutos").addEventListener("change", function () {
         var minuto=document.getElementById("minutos").value;
-        if (minuto>0){
+        var hora=document.getElementById("hora").value;
+        var maximo='{{ evaluacion.tiempo_max }}';
+        var minimo='{{ evaluacion.tiempo_min }}';
+        if(hora>maximo | (hora==maximo && minuto!=0) | hora<minimo ){
         document.getElementById("descuento").style.display="block";
         }
         else{
