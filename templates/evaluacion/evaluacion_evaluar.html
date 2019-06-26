@@ -111,6 +111,12 @@
                 <span style="margin-left:21%"><i class="far fa-clock"></i> Hora final 
                 <input id='hora' class="w3-input w3-border w3-round" type="number" {% if minutos %} value="{{minutos}}" {% endif %} size="1" placeholder="15" style="width:15%; display:inline; margin-left: 10px"> : <input {% if segundos %} value="{{segundos}}" {% endif %} id='minutos' class="w3-input w3-border w3-round" style="width:15%; display:inline" type="number" placeholder="35"></span>
             </div>
+
+
+        <div class="w3-container w3-text-red w3-margin-bottom" id="descuento" style="display:none;">
+                <p>Se aplicará descuento ya que el tiempo no se encuentra entre el min y el max<p>
+       </div>
+
         {% endif %}
         <div class="w3-panel w3-right w3-half">
             <div class="w3-container w3-text-red w3-margin-bottom" id="check"> </div>
@@ -277,6 +283,7 @@
 
     }
 
+
     function checkBeforeSend(){
         let allPresent=true;
         for(let i=0; i<detalleRubrica.length; i++){
@@ -336,13 +343,33 @@
     $('#send-minutos').val(minutos);
     $('#send-maximos').val(JSON.stringify(maximos));
     $('#formSend').submit();
-
-
-
     }
 
     )
-            
+
+    document.getElementById("hora").addEventListener("change", function () {
+        var hora=document.getElementById("hora").value;
+        var minuto=document.getElementById("minutos").value;
+        var maximo='{{ evaluacion.tiempo_max }}';
+        var minimo='{{ evaluacion.tiempo_min }}';
+        if(hora>maximo | (hora==maximo && minuto!=0) | hora<minimo ){
+             document.getElementById("descuento").style.display="block";
+        }
+
+        else{
+             document.getElementById("descuento").style.display="none";
+        }
+
+
+    })
+    document.getElementById("minutos").addEventListener("change", function () {
+        var minuto=document.getElementById("minutos").value;
+        if (minuto>0){
+        document.getElementById("descuento").style.display="block";
+        }
+        else{
+        document.getElementById("descuento").style.display="none";}
+    })
             
         </script>
 
